@@ -32,31 +32,42 @@
 
 AI-Lamb is a focused **Python-based** AI-powered **SAST (Static Application Security Testing)** tool designed to investigate specific vulnerabilities in SaaS (Software-as-a-Service) codebases. Built with modern Python AI/ML technologies, this platform performs static code analysis to identify three critical security issues: misconfigured XML parsers, HTML-to-PDF converter vulnerabilities, and template injection vulnerabilities in templating systems.
 
-### 🎯 Target Repository
+### 🎯 Target Repositories
 
-AI-Lamb is specifically designed to analyze the [Imprenta repository](https://github.com/alfredo/imprenta), an AWS Lambda service that generates PDF files from HTML using jinja, pdfkit and wkhtmltopdf. This repository is an ideal target for our SAST analysis as it contains:
+AI-Lamb is specifically designed to analyze the following repositories that contain HTML-to-PDF conversion and templating functionality:
+
+#### [Imprenta Repository](https://github.com/alfredo/imprenta)
+An AWS Lambda service that generates PDF files from HTML using jinja, pdfkit and wkhtmltopdf. This repository is an ideal target for our SAST analysis as it contains:
 
 - **HTML-to-PDF conversion functionality** using wkhtmltopdf
 - **Template rendering** with Jinja templating engine
 - **XML processing** capabilities through PDF generation
 - **Web service endpoints** that process user input
 
+#### [Invoice Generator Repository](https://github.com/Blankscreen-exe/invoice_generator)
+A Python invoice generator built with Jinja2 and WeasyPrint. This repository is another excellent target for our SAST analysis as it contains:
+
+- **HTML-to-PDF conversion functionality** using WeasyPrint
+- **Template rendering** with Jinja2 templating engine
+- **User input processing** through data.json and settings.py
+- **Template customization** capabilities that process user-provided data
+
 ## ✨ Features
 
 ### 🎯 SAST Vulnerability Focus
 
-AI-Lamb performs static application security testing to identify three specific critical vulnerabilities in the Imprenta repository:
+AI-Lamb performs static application security testing to identify three specific critical vulnerabilities in HTML-to-PDF conversion repositories:
 
 - **XML Parser Misconfigurations**: Static analysis of codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
-- **HTML-to-PDF Converter Vulnerabilities**: Static scanning for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems using wkhtmltopdf
-- **Template Injection Vulnerabilities**: Static identification of templating systems where user input is executed by the Jinja templating engine, potentially leading to Server-Side Template Injection (SSTI)
+- **HTML-to-PDF Converter Vulnerabilities**: Static scanning for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems using wkhtmltopdf and WeasyPrint
+- **Template Injection Vulnerabilities**: Static identification of templating systems where user input is executed by the Jinja/Jinja2 templating engines, potentially leading to Server-Side Template Injection (SSTI)
 
 ### 🔍 SAST Analysis Capabilities
 - **XML Parser Analysis**: Static identification of misconfigured XML parsers and potential XXE vulnerabilities in PDF generation
-- **HTML-to-PDF Converter Scanning**: Static detection of SSRF and security issues in wkhtmltopdf conversion systems
-- **Template Engine Analysis**: Static analysis of Jinja templating systems with user input execution vulnerabilities
+- **HTML-to-PDF Converter Scanning**: Static detection of SSRF and security issues in wkhtmltopdf and WeasyPrint conversion systems
+- **Template Engine Analysis**: Static analysis of Jinja/Jinja2 templating systems with user input execution vulnerabilities
 - **Code Pattern Recognition**: AI-powered identification of vulnerable code patterns through static analysis
-- **Static Code Analysis**: Deep static analysis of source code for specific vulnerability types in AWS Lambda functions
+- **Static Code Analysis**: Deep static analysis of source code for specific vulnerability types in Python applications and AWS Lambda functions
 
 
 
