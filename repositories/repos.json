@@ -1,0 +1,16 @@
+{
+  "repositories": [
+    {
+      "name": "imprenta",
+      "url": "https://github.com/alfredo/imprenta",
+      "description": "AWS Lambda PDF generator using wkhtmltopdf",
+      "branch": "master"
+    },
+    {
+      "name": "invoice_generator",
+      "url": "https://github.com/Blankscreen-exe/invoice_generator",
+      "description": "Python invoice generator using WeasyPrint",
+      "branch": "main"
+    }
+  ]
+}
