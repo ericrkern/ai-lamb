@@ -1,4 +1,8 @@
-# AI-Lamb: AI-Powered Security Platform
+# AI-Lamb: AI-Powered SAST Security Platform
+
+<div align="center">
+  <img src="assets/lamb.png" alt="AI-Lamb" width="300" height="300">
+</div>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -25,17 +29,9 @@ AI-Lamb performs static application security testing to identify three specific 
 - **Code Pattern Recognition**: AI-powered identification of vulnerable code patterns through static analysis
 - **Static Code Analysis**: Deep static analysis of source code for specific vulnerability types
 
-### 🤖 Automated Response
-- **Instant alerting** for detected codebase vulnerabilities
-- **Automated remediation** suggestions for XML parser configurations
-- **Intelligent escalation** based on vulnerability severity
-- **Integration** with development workflows and security tools
 
-### 📊 Advanced Analytics
-- **Codebase security dashboard** with vulnerability metrics
-- **Vulnerability trend analysis** and reporting
-- **Risk scoring** for identified code vulnerabilities
-- **Compliance monitoring** for secure coding standards
+
+
 
 ### 🔧 Easy Integration
 - **API-first design** for seamless codebase integration
