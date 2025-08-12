@@ -93,6 +93,8 @@ AI-Lamb leverages advanced artificial intelligence and machine learning technolo
 - **Code Embeddings**: Converts source code into searchable vectors
 - **Vulnerability Patterns**: Stores and retrieves known vulnerability signatures
 - **Semantic Search**: Finds similar vulnerabilities across different codebases
+- **Repository Processing**: Automatically clones and processes GitHub repositories from JSON configuration
+- **Vector Database**: Creates and maintains a local vector database in the `vector_db/` directory
 
 ### 🚀 LLM Exploration & Integration
 - **Multi-Model Support**: Integration with various LLM providers (OpenAI, Anthropic, etc.)
@@ -153,25 +155,52 @@ nano .env
 ```bash
 # Install Python dependencies
 pip install -r requirements.txt
-
-# Optional: Install frontend dependencies
-cd frontend
-npm install
 ```
 
-### 4. Start Services
+### 4. Prepare Repository List
+Create a JSON file with the list of GitHub repositories to analyze:
+```json
+{
+  "repositories": [
+    {
+      "name": "imprenta",
+      "url": "https://github.com/alfredo/imprenta",
+      "description": "AWS Lambda PDF generator using wkhtmltopdf"
+    },
+    {
+      "name": "invoice_generator", 
+      "url": "https://github.com/Blankscreen-exe/invoice_generator",
+      "description": "Python invoice generator using WeasyPrint"
+    }
+  ]
+}
+```
+
+### 5. Load Repositories and Create Vector Database
 ```bash
-# Run the Python application directly
+# Run the AI-Lamb loader to clone repositories and create vector database
+python ai-lamb-loader.py --repos repositories.json
+
+# This will:
+# - Clone all repositories from the JSON file
+# - Process the codebase for analysis
+# - Create a vector database in the vector_db/ directory
+# - Generate embeddings for vulnerability pattern matching
+```
+
+### 6. Start SAST Analysis
+```bash
+# Run the SAST analysis on the loaded repositories
 python app/main.py
 
 # Or using Docker Compose (optional)
 docker-compose up -d
 ```
 
-### 5. Access the Platform
+### 7. Access the Platform
 - **Web Interface**: http://localhost:3000
 - **API Documentation**: http://localhost:8000/docs
-- **Admin Dashboard**: http://localhost:3000/admin
+- **Vector Database**: Located in `vector_db/` directory
 
 ## 📁 Project Structure
 
@@ -189,34 +218,58 @@ ai-lamb/
 │   │   └── chatbot/       # ChatBot assistant
 │   ├── security/          # Security modules
 │   └── utils/             # Utility functions
-├── frontend/              # React frontend (optional)
+├── ai-lamb-loader.py      # Repository loader and vector database creator
+├── vector_db/             # Vector database for vulnerability pattern matching
+├── repositories/          # Cloned GitHub repositories for analysis
 ├── tests/                 # Python test suite
 ├── docs/                  # Documentation
 ├── config/                # Configuration files
 ├── scripts/               # Python utility scripts
 ├── requirements.txt       # Python dependencies
-├── vector_store/          # Vector database storage
 └── docker/                # Docker configurations (optional)
 ```
 
 ## 🔧 Configuration
+
+### Repository Configuration
+
+Create a JSON file (e.g., `repositories.json`) with the list of repositories to analyze:
+
+```json
+{
+  "repositories": [
+    {
+      "name": "imprenta",
+      "url": "https://github.com/alfredo/imprenta",
+      "description": "AWS Lambda PDF generator using wkhtmltopdf",
+      "branch": "master"
+    },
+    {
+      "name": "invoice_generator",
+      "url": "https://github.com/Blankscreen-exe/invoice_generator", 
+      "description": "Python invoice generator using WeasyPrint",
+      "branch": "main"
+    }
+  ]
+}
+```
 
 ### Environment Variables
 
 Create a `.env` file with the following variables:
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:password@localhost/ai_lamb
-REDIS_URL=redis://localhost:6379
-
-# Security
-SECRET_KEY=your-secret-key-here
-JWT_SECRET=your-jwt-secret-here
+# Vector Database
+VECTOR_DB_PATH=./vector_db
+REPOSITORIES_PATH=./repositories
 
 # AI/ML
 MODEL_PATH=/path/to/ml/models
 API_KEYS_OPENAI=your-openai-api-key
+
+# Security
+SECRET_KEY=your-secret-key-here
+JWT_SECRET=your-jwt-secret-here
 
 # External Services
 SLACK_WEBHOOK_URL=your-slack-webhook
@@ -240,6 +293,11 @@ pytest tests/test_security.py
 ## 📚 API Documentation
 
 The API documentation is available at `/docs` when the server is running. Key endpoints include:
+
+### Repository Management Endpoints
+- `POST /api/v1/repos/load` - Load repositories from JSON configuration file
+- `GET /api/v1/repos/list` - List all loaded repositories
+- `POST /api/v1/repos/process` - Process repositories and create vector database
 
 ### SAST Analysis Endpoints
 - `POST /api/v1/sast/analyze` - Complete static application security testing
