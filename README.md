@@ -6,44 +6,42 @@
 
 ## 🚀 Overview
 
-AI-Lamb is a cutting-edge **Python-based** AI-powered security platform designed to investigate and detect vulnerabilities in SaaS (Software-as-a-Service) tools and applications. Built with modern Python AI/ML technologies, this platform leverages machine learning algorithms to identify security weaknesses, misconfigurations, and potential threats in cloud-based services and SaaS applications in real-time.
+AI-Lamb is a focused **Python-based** AI-powered security analysis tool designed to investigate specific vulnerabilities in SaaS (Software-as-a-Service) codebases. Built with modern Python AI/ML technologies, this platform performs targeted analysis to identify three critical security issues: misconfigured XML parsers, HTML-to-PDF converter vulnerabilities, and template injection vulnerabilities in templating systems.
 
 ## ✨ Features
 
 ### 🎯 Primary Vulnerability Focus
 
-AI-Lamb specializes in detecting and analyzing the following critical vulnerabilities in SaaS applications:
+AI-Lamb performs targeted codebase analysis to identify three specific critical vulnerabilities:
 
-- **Server-Side Template Injection (SSTI)**: Detects template injection vulnerabilities that can lead to remote code execution
-- **External XML Entity (XXE) Injection**: Identifies XML processing vulnerabilities that can expose sensitive data
-- **Server-Side Request Forgery (SSRF)**: Detects SSRF vulnerabilities, with special focus on HTML-to-PDF converters
+- **XML Parser Misconfigurations**: Analyzes codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
+- **HTML-to-PDF Converter Vulnerabilities**: Scans for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems
+- **Template Injection Vulnerabilities**: Identifies templating systems where user input is executed by the templating engine, potentially leading to Server-Side Template Injection (SSTI)
 
-### 🔍 SaaS Vulnerability Detection
-- **Server-Side Template Injection (SSTI)** detection and exploitation testing
-- **External XML Entity (XXE) Injection** vulnerability scanning
-- **Server-Side Request Forgery (SSRF)** detection, especially in HTML-to-PDF converters
-- **Automated scanning** of SaaS applications and APIs
-- **Configuration analysis** for security misconfigurations
-- **API security testing** and endpoint vulnerability assessment
-- **Authentication and authorization** weakness detection
+### 🔍 Targeted Codebase Analysis
+- **XML Parser Analysis**: Identifies misconfigured XML parsers and potential XXE vulnerabilities
+- **HTML-to-PDF Converter Scanning**: Detects SSRF and security issues in PDF conversion systems
+- **Template Engine Analysis**: Finds templating systems with user input execution vulnerabilities
+- **Code Pattern Recognition**: AI-powered identification of vulnerable code patterns
+- **Static Code Analysis**: Deep analysis of source code for specific vulnerability types
 
 ### 🤖 Automated Response
-- **Instant alerting** for detected SaaS vulnerabilities
-- **Automated remediation** suggestions and workflows
+- **Instant alerting** for detected codebase vulnerabilities
+- **Automated remediation** suggestions for XML parser configurations
 - **Intelligent escalation** based on vulnerability severity
-- **Integration** with popular SaaS platforms and security tools
+- **Integration** with development workflows and security tools
 
 ### 📊 Advanced Analytics
-- **SaaS security dashboard** with real-time vulnerability metrics
+- **Codebase security dashboard** with vulnerability metrics
 - **Vulnerability trend analysis** and reporting
-- **Risk scoring** for SaaS applications and configurations
-- **Compliance monitoring** for SaaS security standards
+- **Risk scoring** for identified code vulnerabilities
+- **Compliance monitoring** for secure coding standards
 
 ### 🔧 Easy Integration
-- **API-first design** for seamless SaaS platform integration
+- **API-first design** for seamless codebase integration
 - **Webhook support** for real-time vulnerability notifications
-- **Multi-SaaS platform compatibility** (Slack, GitHub, AWS, etc.)
-- **Extensible plugin architecture** for custom SaaS tools
+- **Development workflow integration** (GitHub, GitLab, CI/CD pipelines)
+- **Extensible plugin architecture** for custom analysis tools
 - **AI-powered automation** with LangChain integration
 
 ## 🤖 AI-Powered Capabilities
@@ -81,8 +79,10 @@ AI-Lamb leverages advanced artificial intelligence and machine learning technolo
 - **Risk Assessment**: AI-powered risk scoring and prioritization
 
 ### 📊 Source Code Analysis
-- **Static Analysis**: AI-enhanced static code analysis
-- **Pattern Recognition**: Identifies security patterns and anti-patterns
+- **XML Parser Analysis**: Identifies misconfigured XML parsers and XXE vulnerabilities
+- **HTML-to-PDF Analysis**: Detects SSRF vulnerabilities in PDF conversion systems
+- **Template Engine Analysis**: Finds template injection vulnerabilities in templating systems
+- **Pattern Recognition**: Identifies vulnerable code patterns and anti-patterns
 - **Code Review**: Automated security code review with AI insights
 
 ### 🤖 Agentic AI
@@ -221,11 +221,11 @@ pytest tests/test_security.py
 
 The API documentation is available at `/docs` when the server is running. Key endpoints include:
 
-### Security Scanning Endpoints
-- `POST /api/v1/saas/scan` - SaaS application vulnerability scanning
-- `POST /api/v1/ssti/detect` - Server-Side Template Injection detection
-- `POST /api/v1/xxe/scan` - External XML Entity Injection scanning
-- `POST /api/v1/ssrf/detect` - Server-Side Request Forgery detection
+### Codebase Analysis Endpoints
+- `POST /api/v1/codebase/analyze` - Complete codebase vulnerability analysis
+- `POST /api/v1/xml/analyze` - XML parser misconfiguration analysis
+- `POST /api/v1/pdf-converter/analyze` - HTML-to-PDF converter vulnerability scanning
+- `POST /api/v1/template/analyze` - Template injection vulnerability detection
 
 ### AI-Powered Analysis Endpoints
 - `POST /api/v1/ai/analyze` - AI-powered code analysis
@@ -236,7 +236,7 @@ The API documentation is available at `/docs` when the server is running. Key en
 ### Data & Analytics Endpoints
 - `GET /api/v1/vulnerabilities` - List detected vulnerabilities
 - `POST /api/v1/remediation/suggest` - Automated remediation suggestions
-- `GET /api/v1/analytics/saas-dashboard` - SaaS security analytics
+- `GET /api/v1/analytics/codebase-dashboard` - Codebase security analytics
 - `GET /api/v1/vector/search` - Semantic vulnerability search
 
 ## 🤝 Contributing
@@ -270,30 +270,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔮 Roadmap
 
-### Core Security Features
-- [ ] Advanced Server-Side Template Injection (SSTI) detection and exploitation
-- [ ] Enhanced External XML Entity (XXE) Injection scanning capabilities
-- [ ] Specialized Server-Side Request Forgery (SSRF) detection for HTML-to-PDF converters
-- [ ] Zero-day SaaS vulnerability detection
+### Core Analysis Features
+- [ ] Advanced XML parser misconfiguration detection
+- [ ] Enhanced HTML-to-PDF converter vulnerability scanning
+- [ ] Specialized template injection vulnerability detection
+- [ ] Zero-day vulnerability pattern recognition
 
 ### AI/ML Enhancements
-- [ ] Advanced LangChain integration with custom security tools
-- [ ] Intelligent prompt engineering for vulnerability detection
+- [ ] Advanced LangChain integration with custom code analysis tools
+- [ ] Intelligent prompt engineering for specific vulnerability detection
 - [ ] Vector database integration for vulnerability pattern matching
 - [ ] Multi-LLM support with model selection optimization
-- [ ] Autonomous AI agents for security analysis
+- [ ] Autonomous AI agents for codebase analysis
 - [ ] AI-powered source code analysis and review
 
 ### Platform Features
-- [ ] Cloud-native SaaS security monitoring
-- [ ] Mobile app for vulnerability response
-- [ ] Integration with popular SaaS platforms (Slack, GitHub, AWS, etc.)
-- [ ] Advanced SaaS security analytics and reporting
-- [ ] Multi-tenant SaaS architecture support
-- [ ] SaaS API security testing and rate limiting
+- [ ] Integration with development workflows (GitHub, GitLab, CI/CD)
+- [ ] Code review automation and reporting
+- [ ] Integration with popular development platforms
+- [ ] Advanced codebase security analytics and reporting
+- [ ] Multi-repository analysis support
+- [ ] Automated vulnerability reporting and tracking
 
 ---
 
-**⚠️ Security Notice**: This is a SaaS security testing tool. Please ensure you have proper authorization before scanning any SaaS applications or APIs, and follow all applicable security best practices and terms of service.
+**⚠️ Security Notice**: This is a codebase security analysis tool. Please ensure you have proper authorization before analyzing any codebases, and follow all applicable security best practices and terms of service.
 
 **Made with ❤️ by the AI-Lamb Team**
