@@ -1,0 +1,2 @@
+# This file ensures the vector_db folder is tracked in git
+# This folder will contain the vector database for vulnerability pattern matching
