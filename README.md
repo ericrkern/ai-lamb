@@ -6,24 +6,24 @@
 
 ## 🚀 Overview
 
-AI-Lamb is a focused **Python-based** AI-powered security analysis tool designed to investigate specific vulnerabilities in SaaS (Software-as-a-Service) codebases. Built with modern Python AI/ML technologies, this platform performs targeted analysis to identify three critical security issues: misconfigured XML parsers, HTML-to-PDF converter vulnerabilities, and template injection vulnerabilities in templating systems.
+AI-Lamb is a focused **Python-based** AI-powered **SAST (Static Application Security Testing)** tool designed to investigate specific vulnerabilities in SaaS (Software-as-a-Service) codebases. Built with modern Python AI/ML technologies, this platform performs static code analysis to identify three critical security issues: misconfigured XML parsers, HTML-to-PDF converter vulnerabilities, and template injection vulnerabilities in templating systems.
 
 ## ✨ Features
 
-### 🎯 Primary Vulnerability Focus
+### 🎯 SAST Vulnerability Focus
 
-AI-Lamb performs targeted codebase analysis to identify three specific critical vulnerabilities:
+AI-Lamb performs static application security testing to identify three specific critical vulnerabilities:
 
-- **XML Parser Misconfigurations**: Analyzes codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
-- **HTML-to-PDF Converter Vulnerabilities**: Scans for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems
-- **Template Injection Vulnerabilities**: Identifies templating systems where user input is executed by the templating engine, potentially leading to Server-Side Template Injection (SSTI)
+- **XML Parser Misconfigurations**: Static analysis of codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
+- **HTML-to-PDF Converter Vulnerabilities**: Static scanning for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems
+- **Template Injection Vulnerabilities**: Static identification of templating systems where user input is executed by the templating engine, potentially leading to Server-Side Template Injection (SSTI)
 
-### 🔍 Targeted Codebase Analysis
-- **XML Parser Analysis**: Identifies misconfigured XML parsers and potential XXE vulnerabilities
-- **HTML-to-PDF Converter Scanning**: Detects SSRF and security issues in PDF conversion systems
-- **Template Engine Analysis**: Finds templating systems with user input execution vulnerabilities
-- **Code Pattern Recognition**: AI-powered identification of vulnerable code patterns
-- **Static Code Analysis**: Deep analysis of source code for specific vulnerability types
+### 🔍 SAST Analysis Capabilities
+- **XML Parser Analysis**: Static identification of misconfigured XML parsers and potential XXE vulnerabilities
+- **HTML-to-PDF Converter Scanning**: Static detection of SSRF and security issues in PDF conversion systems
+- **Template Engine Analysis**: Static analysis of templating systems with user input execution vulnerabilities
+- **Code Pattern Recognition**: AI-powered identification of vulnerable code patterns through static analysis
+- **Static Code Analysis**: Deep static analysis of source code for specific vulnerability types
 
 ### 🤖 Automated Response
 - **Instant alerting** for detected codebase vulnerabilities
@@ -78,12 +78,12 @@ AI-Lamb leverages advanced artificial intelligence and machine learning technolo
 - **Threat Intelligence**: Real-time threat intelligence integration
 - **Risk Assessment**: AI-powered risk scoring and prioritization
 
-### 📊 Source Code Analysis
-- **XML Parser Analysis**: Identifies misconfigured XML parsers and XXE vulnerabilities
-- **HTML-to-PDF Analysis**: Detects SSRF vulnerabilities in PDF conversion systems
-- **Template Engine Analysis**: Finds template injection vulnerabilities in templating systems
-- **Pattern Recognition**: Identifies vulnerable code patterns and anti-patterns
-- **Code Review**: Automated security code review with AI insights
+### 📊 SAST Source Code Analysis
+- **XML Parser Analysis**: Static identification of misconfigured XML parsers and XXE vulnerabilities
+- **HTML-to-PDF Analysis**: Static detection of SSRF vulnerabilities in PDF conversion systems
+- **Template Engine Analysis**: Static analysis of template injection vulnerabilities in templating systems
+- **Pattern Recognition**: Static identification of vulnerable code patterns and anti-patterns
+- **Automated Code Review**: AI-powered static security code review with insights
 
 ### 🤖 Agentic AI
 - **Autonomous Agents**: Self-directed security analysis agents
@@ -221,11 +221,11 @@ pytest tests/test_security.py
 
 The API documentation is available at `/docs` when the server is running. Key endpoints include:
 
-### Codebase Analysis Endpoints
-- `POST /api/v1/codebase/analyze` - Complete codebase vulnerability analysis
-- `POST /api/v1/xml/analyze` - XML parser misconfiguration analysis
-- `POST /api/v1/pdf-converter/analyze` - HTML-to-PDF converter vulnerability scanning
-- `POST /api/v1/template/analyze` - Template injection vulnerability detection
+### SAST Analysis Endpoints
+- `POST /api/v1/sast/analyze` - Complete static application security testing
+- `POST /api/v1/sast/xml/analyze` - Static XML parser misconfiguration analysis
+- `POST /api/v1/sast/pdf-converter/analyze` - Static HTML-to-PDF converter vulnerability scanning
+- `POST /api/v1/sast/template/analyze` - Static template injection vulnerability detection
 
 ### AI-Powered Analysis Endpoints
 - `POST /api/v1/ai/analyze` - AI-powered code analysis
@@ -236,7 +236,7 @@ The API documentation is available at `/docs` when the server is running. Key en
 ### Data & Analytics Endpoints
 - `GET /api/v1/vulnerabilities` - List detected vulnerabilities
 - `POST /api/v1/remediation/suggest` - Automated remediation suggestions
-- `GET /api/v1/analytics/codebase-dashboard` - Codebase security analytics
+- `GET /api/v1/analytics/sast-dashboard` - SAST security analytics
 - `GET /api/v1/vector/search` - Semantic vulnerability search
 
 ## 🤝 Contributing
@@ -270,30 +270,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔮 Roadmap
 
-### Core Analysis Features
-- [ ] Advanced XML parser misconfiguration detection
-- [ ] Enhanced HTML-to-PDF converter vulnerability scanning
-- [ ] Specialized template injection vulnerability detection
-- [ ] Zero-day vulnerability pattern recognition
+### Core SAST Features
+- [ ] Advanced static XML parser misconfiguration detection
+- [ ] Enhanced static HTML-to-PDF converter vulnerability scanning
+- [ ] Specialized static template injection vulnerability detection
+- [ ] Zero-day vulnerability pattern recognition through static analysis
 
 ### AI/ML Enhancements
-- [ ] Advanced LangChain integration with custom code analysis tools
-- [ ] Intelligent prompt engineering for specific vulnerability detection
+- [ ] Advanced LangChain integration with custom SAST analysis tools
+- [ ] Intelligent prompt engineering for static vulnerability detection
 - [ ] Vector database integration for vulnerability pattern matching
 - [ ] Multi-LLM support with model selection optimization
-- [ ] Autonomous AI agents for codebase analysis
-- [ ] AI-powered source code analysis and review
+- [ ] Autonomous AI agents for static code analysis
+- [ ] AI-powered static source code analysis and review
 
 ### Platform Features
 - [ ] Integration with development workflows (GitHub, GitLab, CI/CD)
-- [ ] Code review automation and reporting
+- [ ] Automated SAST code review and reporting
 - [ ] Integration with popular development platforms
-- [ ] Advanced codebase security analytics and reporting
-- [ ] Multi-repository analysis support
+- [ ] Advanced SAST security analytics and reporting
+- [ ] Multi-repository static analysis support
 - [ ] Automated vulnerability reporting and tracking
 
 ---
 
-**⚠️ Security Notice**: This is a codebase security analysis tool. Please ensure you have proper authorization before analyzing any codebases, and follow all applicable security best practices and terms of service.
+**⚠️ Security Notice**: This is a SAST (Static Application Security Testing) tool. Please ensure you have proper authorization before analyzing any codebases, and follow all applicable security best practices and terms of service.
 
 **Made with ❤️ by the AI-Lamb Team**
