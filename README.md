@@ -32,33 +32,37 @@
 
 AI-Lamb is a focused **Python-based** AI-powered **SAST (Static Application Security Testing)** tool designed to investigate specific vulnerabilities in SaaS (Software-as-a-Service) codebases. Built with modern Python AI/ML technologies, this platform performs static code analysis to identify three critical security issues: misconfigured XML parsers, HTML-to-PDF converter vulnerabilities, and template injection vulnerabilities in templating systems.
 
+### 🎯 Target Repository
+
+AI-Lamb is specifically designed to analyze the [Imprenta repository](https://github.com/alfredo/imprenta), an AWS Lambda service that generates PDF files from HTML using jinja, pdfkit and wkhtmltopdf. This repository is an ideal target for our SAST analysis as it contains:
+
+- **HTML-to-PDF conversion functionality** using wkhtmltopdf
+- **Template rendering** with Jinja templating engine
+- **XML processing** capabilities through PDF generation
+- **Web service endpoints** that process user input
+
 ## ✨ Features
 
 ### 🎯 SAST Vulnerability Focus
 
-AI-Lamb performs static application security testing to identify three specific critical vulnerabilities:
+AI-Lamb performs static application security testing to identify three specific critical vulnerabilities in the Imprenta repository:
 
 - **XML Parser Misconfigurations**: Static analysis of codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
-- **HTML-to-PDF Converter Vulnerabilities**: Static scanning for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems
-- **Template Injection Vulnerabilities**: Static identification of templating systems where user input is executed by the templating engine, potentially leading to Server-Side Template Injection (SSTI)
+- **HTML-to-PDF Converter Vulnerabilities**: Static scanning for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems using wkhtmltopdf
+- **Template Injection Vulnerabilities**: Static identification of templating systems where user input is executed by the Jinja templating engine, potentially leading to Server-Side Template Injection (SSTI)
 
 ### 🔍 SAST Analysis Capabilities
-- **XML Parser Analysis**: Static identification of misconfigured XML parsers and potential XXE vulnerabilities
-- **HTML-to-PDF Converter Scanning**: Static detection of SSRF and security issues in PDF conversion systems
-- **Template Engine Analysis**: Static analysis of templating systems with user input execution vulnerabilities
+- **XML Parser Analysis**: Static identification of misconfigured XML parsers and potential XXE vulnerabilities in PDF generation
+- **HTML-to-PDF Converter Scanning**: Static detection of SSRF and security issues in wkhtmltopdf conversion systems
+- **Template Engine Analysis**: Static analysis of Jinja templating systems with user input execution vulnerabilities
 - **Code Pattern Recognition**: AI-powered identification of vulnerable code patterns through static analysis
-- **Static Code Analysis**: Deep static analysis of source code for specific vulnerability types
+- **Static Code Analysis**: Deep static analysis of source code for specific vulnerability types in AWS Lambda functions
 
 
 
 
 
-### 🔧 Easy Integration
-- **API-first design** for seamless codebase integration
-- **Webhook support** for real-time vulnerability notifications
-- **Development workflow integration** (GitHub, GitLab, CI/CD pipelines)
-- **Extensible plugin architecture** for custom analysis tools
-- **AI-powered automation** with LangChain integration
+
 
 ## 🤖 AI-Powered Capabilities
 
@@ -106,18 +110,7 @@ AI-Lamb leverages advanced artificial intelligence and machine learning technolo
 - **Multi-Agent Coordination**: Coordinated analysis across multiple agents
 - **Goal-Oriented Scanning**: AI agents that work towards specific security objectives
 
-## 🛠️ Technology Stack
 
-- **Core Language**: Python 3.8+
-- **AI/ML Libraries**: TensorFlow, PyTorch, Scikit-learn, NumPy, Pandas
-- **LLM Framework**: LangChain for AI orchestration and automation
-- **Web Framework**: FastAPI, Flask
-- **Database**: PostgreSQL, Redis
-- **Vector Database**: Chroma, Pinecone, or Weaviate for embeddings
-- **API**: RESTful APIs with FastAPI
-- **Frontend**: React.js, TypeScript (optional)
-- **Infrastructure**: Docker, Kubernetes
-- **Monitoring**: Prometheus, Grafana
 
 ## 📋 Prerequisites
 
