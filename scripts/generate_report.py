@@ -10,6 +10,8 @@ from typing import Optional, Type
 from langchain.callbacks.manager import CallbackManagerForToolRun
 from dotenv import load_dotenv
 import os
+import json
+from datetime import datetime
 
 # Load environment variables
 load_dotenv()
@@ -28,7 +30,7 @@ class CustomSearchTool(BaseTool):
         self, query: str, run_manager: Optional[CallbackManagerForToolRun] = None
     ) -> str:
         """Use the tool."""
-        faiss_db_path = "../vector_databases/vtm_faiss"
+        faiss_db_path = "../vector_db/imprenta.faiss"
         db = FAISS.load_local(
             faiss_db_path,
             BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0"),
@@ -53,20 +55,24 @@ llm = ChatBedrock(
 
 # Define instructions and prompt
 instructions = """
-You are an agent designed to analyze Python code for potential Insecure Direct Object Reference (IDOR) vulnerabilities.
+You are an agent designed to analyze Python code for potential XML Parser Misconfigurations vulnerabilities.
 
 ### Analysis Process
 1. Initial Review:
-   - Identify where the code accesses or modifies database records
-   - Locate user-supplied input that influences record access
-   - Find authorization checks in the code
+ - XML Parser Misconfigurations: Analyzes codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
+ - HTML-to-PDF Converter Vulnerabilities: Scans for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems
+ - Template Injection Vulnerabilities: Identifies templating systems where user input is executed by the templating engine, potentially leading to Server-Side Template Injection (SSTI)
 
 2. Reflection Questions:
    Consider these questions carefully:
-   - How does the code determine which records a user can access?
-   - What prevents a user from accessing records belonging to others?
-   - Is there a mismatch between authorization scope and data access?
-   - Could changing the input parameters bypass the authorization?
+   - Did I confirm that every XML parser instance explicitly disables DTD and external entity resolution, or could any parser be using insecure defaults?
+   - Have I considered that XML parsing might occur indirectly in third-party libraries, frameworks, or utility modules?
+   - Did I verify whether all XML inputs are from trusted sources, or could an attacker control them (e.g., user input, file uploads, external API responses)?
+   - Could any XML transformations, XSLT, or schema imports be loading resources from untrusted or external locations, posing additional risks?
+   - Is my explanation clear on how an attacker could exploit each misconfiguration in this specific code context?
+   - Did I provide precise, language- and library-specific mitigation steps rather than generic advice?
+   - Have I ensured I reviewed all XML parsing points flagged during the initial review, avoiding missed spots?
+   - Are there any ambiguous or borderline cases where the security impact is unclear and require further investigation?
 
 3. Challenge Initial Assessment:
    - What assumptions did you make about the authorization?
@@ -78,7 +84,6 @@ You have access to a vector database to search for code-related information. Use
 
 ### **Output Format**
 Your final response must be in JSON format, containing the following fields:
-- provide background on information about the code.
 - `is_insecure`: (bool) Whether the code is considered insecure.
 - `reason`: (str) The reason the code is considered insecure or secure.
 
@@ -135,6 +140,200 @@ def analyze_code(input_code: str) -> dict:
     return response
 
 
+def generate_html_report(result, input_code):
+    """Generate a clean HTML report from the analysis result."""
+    
+    # Extract data from result
+    if isinstance(result, dict):
+        output = result.get('output', str(result))
+        
+        # Try to extract JSON from the output string
+        if isinstance(output, str):
+            # Look for JSON in the output (common pattern in agent responses)
+            import re
+            json_match = re.search(r'\{.*\}', output, re.DOTALL)
+            if json_match:
+                try:
+                    parsed = json.loads(json_match.group())
+                    is_insecure = parsed.get('is_insecure', 'Unknown')
+                    reason = parsed.get('reason', 'No reason provided')
+                except:
+                    is_insecure = 'Unknown'
+                    reason = output
+            else:
+                # If no JSON found, try to extract boolean and reason from text
+                if 'true' in output.lower() and 'insecure' in output.lower():
+                    is_insecure = True
+                elif 'false' in output.lower() and 'secure' in output.lower():
+                    is_insecure = False
+                else:
+                    is_insecure = 'Unknown'
+                reason = output
+        else:
+            is_insecure = 'Unknown'
+            reason = str(output)
+    else:
+        is_insecure = 'Unknown'
+        reason = str(result)
+    
+    # Determine status and styling
+    if is_insecure == True:
+        status = "🔴 VULNERABLE"
+        status_class = "vulnerable"
+    elif is_insecure == False:
+        status = "🟢 SECURE"
+        status_class = "secure"
+    else:
+        status = "🟡 UNKNOWN"
+        status_class = "unknown"
+    
+    html_template = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Lamb Security Analysis Report</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }}
+        .container {{
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 30px;
+        }}
+        .header h1 {{
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }}
+        .header .subtitle {{
+            font-size: 1.2em;
+            opacity: 0.9;
+        }}
+        .content {{
+            padding: 40px;
+        }}
+        .section {{
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #e74c3c;
+        }}
+        .section h2 {{
+            color: #e74c3c;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }}
+        .status-badge {{
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }}
+        .vulnerable {{
+            background: #ffe6e6;
+            color: #d63031;
+            border: 2px solid #d63031;
+        }}
+        .secure {{
+            background: #e8f5e8;
+            color: #27ae60;
+            border: 2px solid #27ae60;
+        }}
+        .unknown {{
+            background: #fff3cd;
+            color: #f39c12;
+            border: 2px solid #f39c12;
+        }}
+        .code-block {{
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }}
+        .timestamp {{
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #dee2e6;
+        }}
+        .reason {{
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+            margin: 15px 0;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐑 AI-Lamb Security Analysis</h1>
+            <div class="subtitle">Static Application Security Testing Report</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>📋 Analysis Summary</h2>
+                <div class="status-badge {status_class}">{status}</div>
+                <p>This report contains the security analysis results for the provided Python code.</p>
+            </div>
+            
+            <div class="section">
+                <h2>🔍 Analyzed Code</h2>
+                <div class="code-block">{input_code.strip()}</div>
+            </div>
+            
+            <div class="section">
+                <h2>📊 Security Assessment</h2>
+                <div class="reason">
+                    <strong>Analysis Result:</strong><br>
+                    {reason}
+                </div>
+            </div>
+            
+            <div class="timestamp">
+                Report generated on {datetime.now().strftime("%B %d, %Y at %I:%M %p")}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+    
+    return html_template
+
+
 if __name__ == "__main__":
     # Example input
     input_code = """
@@ -145,4 +344,13 @@ if __name__ == "__main__":
         User.objects.filter(id=user_id).update(is_active=False)
     """
     result = analyze_code(input_code)
-    print(result)
+    
+    # Generate clean HTML report
+    html_content = generate_html_report(result, input_code)
+    
+    # Write result to HTML file
+    output_file = "../ai-lamb-report.html"
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    
+    print(f"Report generated successfully: {output_file}")
