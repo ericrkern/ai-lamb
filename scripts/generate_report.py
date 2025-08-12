@@ -60,9 +60,7 @@ You are an agent designed to analyze Python code for potential XML Parser Miscon
 ### Analysis Process
 1. Initial Review:
  - XML Parser Misconfigurations: Analyzes codebase for misconfigured XML parsers that could lead to XXE (External XML Entity) injection vulnerabilities
- - HTML-to-PDF Converter Vulnerabilities: Scans for potential SSRF (Server-Side Request Forgery) and other security issues in HTML-to-PDF conversion systems
- - Template Injection Vulnerabilities: Identifies templating systems where user input is executed by the templating engine, potentially leading to Server-Side Template Injection (SSTI)
-
+ 
 2. Reflection Questions:
    Consider these questions carefully:
    - Did I confirm that every XML parser instance explicitly disables DTD and external entity resolution, or could any parser be using insecure defaults?
@@ -75,9 +73,12 @@ You are an agent designed to analyze Python code for potential XML Parser Miscon
    - Are there any ambiguous or borderline cases where the security impact is unclear and require further investigation?
 
 3. Challenge Initial Assessment:
-   - What assumptions did you make about the authorization?
-   - Are you certain the authorization check applies to the specific record?
-   - What would an attacker try first to bypass these controls?
+    -Have I identified all places in the codebase where XML parsing or processing occurs, including indirect or third-party library usage?
+    - Did I correctly determine which XML inputs might come from untrusted or attacker-controlled sources?
+    - Are there any legacy or less obvious XML handling code paths that might have been overlooked in this initial scan?
+    - Have I noted the exact libraries, frameworks, and versions used for XML parsing to help focus the detailed review?
+    - Could some XML parsing be happening in dynamically loaded modules or conditional code branches I haven’t accounted for?
+    - Are there any XML-related features or functionality (e.g., transformations, schema validations) that deserve special attention in the deeper review?
 
 ### **TOOLS**
 You have access to a vector database to search for code-related information. Use it to understand how custom functions handle authorization.
@@ -136,7 +137,22 @@ def analyze_code(input_code: str) -> dict:
     """
     Analyze the given code using the agent_executor and return the result.
     """
-    response = agent_executor.invoke({"input": input_code})
+    # Capture all output during execution
+    import io
+    import sys
+    from contextlib import redirect_stdout
+    
+    # Capture stdout to get all printed output
+    captured_output = io.StringIO()
+    with redirect_stdout(captured_output):
+        response = agent_executor.invoke({"input": input_code})
+    
+    # Get the captured output
+    verbose_output = captured_output.getvalue()
+    
+    # Add verbose output to the response
+    response['verbose_output'] = verbose_output
+    
     return response
 
 
@@ -144,8 +160,10 @@ def generate_html_report(result, input_code):
     """Generate a clean HTML report from the analysis result."""
     
     # Extract data from result
+    verbose_output = ""
     if isinstance(result, dict):
         output = result.get('output', str(result))
+        verbose_output = result.get('verbose_output', "")
         
         # Try to extract JSON from the output string
         if isinstance(output, str):
@@ -293,6 +311,25 @@ def generate_html_report(result, input_code):
             border-left: 4px solid #e74c3c;
             margin: 15px 0;
         }}
+        .verbose-output {{
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin: 15px 0;
+        }}
+        .verbose-output pre {{
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+            max-height: 400px;
+            overflow-y: auto;
+        }}
     </style>
 </head>
 <body>
@@ -319,6 +356,14 @@ def generate_html_report(result, input_code):
                 <div class="reason">
                     <strong>Analysis Result:</strong><br>
                     {reason}
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔍 Detailed Analysis Process</h2>
+                <div class="verbose-output">
+                    <strong>Agent Execution Log:</strong><br>
+                    <pre>{verbose_output}</pre>
                 </div>
             </div>
             
